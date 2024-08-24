@@ -1,16 +1,25 @@
 import asyncio
 
 
-class OrderController:
-    async def place_order(self, order_data):
-        # Simulate an async operation, e.g., saving order to a database
-        await asyncio.sleep(1)
-        print(
-            f"Order placed for Table {order_data['table_number']} with items: {', '.join(order_data['items'])}"
-        )
+async def async_place_order(order_id: str, task_status: dict):
+    order_prepare_time = 3
+    print(f"Placing order {order_id}...")  # Debug statement
+    print(f"Order will prepared in {order_prepare_time} min")
+    await asyncio.sleep(order_prepare_time)  # Simulate delay
+    task_status[order_id] = "Order ready"  # Update status
+    print(f"Order {order_id} placed.")  # Debug statement
+    return {"status": "Order ready", "message": "Bon Appetit"}
 
-    async def list_orders(self):
-        await asyncio.sleep(1)  # Simulate async I/O
-        print("Listing all orders...")
-        # For demo purposes, we're just printing a message
-        # You can extend this to actually list stored orders
+
+async def provide_complementary(order_id: str, task_status: dict):
+    print(f"Providing complementary drinks for order {order_id}...")  # Debug statement
+    # Wait until the order is ready
+    while task_status.get(order_id) != "Order ready":
+        await asyncio.sleep(0.1)  # Check status periodically
+    await asyncio.sleep(1)  # Simulate delay
+    task_status[order_id] = "Drinks served"  # Update status
+    print(f"Drinks served for order {order_id}.")  # Debug statement
+    return {
+        "status": "Drinks served",
+        "message": "Please enjoy your complementary drinks",
+    }
