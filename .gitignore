@@ -3,6 +3,9 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# fastapi testdatabase
+test.db
+
 # C extensions
 *.so
 
